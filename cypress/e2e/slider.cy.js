@@ -16,3 +16,28 @@ describe('Swiper Gallery Test', function () {
     cy.get('.swiper-slide-active').should('contain', 'Paris');
   });
 });
+
+describe('Gallery Navigation Test', function () {
+  it('Checks change of slides while navigating', function () {
+    cy.visit('http://localhost:3000');
+    let initialSlide;
+    cy.get('.swiper-slide-active').then(($slide) => {
+      initialSlide = $slide.text();
+    });
+    cy.get('.swiper-button-next').click();
+    cy.wait(1000);
+    cy.get('.swiper-slide-active').should(($slide) => {
+      expect($slide.text()).not.to.eq(initialSlide);
+    });
+    let nextSlide;
+    cy.get('.swiper-slide-active').then(($slide) => {
+      nextSlide = $slide.text();
+    });
+    cy.get('.swiper-button-prev').click();
+    cy.wait(1000);
+    cy.get('.swiper-slide-active').should(($slide) => {
+      expect($slide.text()).not.to.eq(nextSlide);
+      expect($slide.text()).to.eq(initialSlide);
+    });
+  });
+});
